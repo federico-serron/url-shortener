@@ -1,3 +1,4 @@
+from base64 import urlsafe_b64decode
 from datetime import datetime
 from core.models import ShortUrls
 from core import app, db
@@ -14,6 +15,8 @@ def generate_short_id(num_of_chars: int):
 
 @app.route('/', methods=['GET', 'POST'])
 def index():
+    urls_stored = ShortUrls.query.all()
+    
     if request.method == 'POST':
         url = request.form['url']
         short_id = request.form['custom_id']
@@ -33,8 +36,11 @@ def index():
         db.session.add(new_link)
         db.session.commit()
         short_url = request.host_url + short_id
-
-        return render_template('index.html', short_url=short_url)
+            
+        return render_template('index.html', short_url=short_url, urls_stored=urls_stored)
+    
+    if urls_stored:
+        return render_template('index.html', urls_stored=urls_stored)
     return render_template('index.html')
 
 

@@ -24,14 +24,14 @@
                 </div>
             </form>
 
-            {% if short_url %}
+            {% if short_url and not url_stored %}
             <hr>
             <span><a href="{{ short_url }}" target="_blank">{{ short_url }}</a></span>
             {% endif %}
 
-            {%if urls%}
+            {%if urls_stored%}
             <ul>
-                {% for url in urls %}
+                {% for url in urls_stored %}
                     <ol><a href="{{ url.original_url }}">{{ url.short_id }}</a></ol>
                 {% endfor %}
             </ul>
